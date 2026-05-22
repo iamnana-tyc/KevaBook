@@ -1,0 +1,186 @@
+# =========================================================
+# Java / Spring Boot / Maven Microservices .gitignore
+# =========================================================
+
+# =========================
+# IDEs
+# =========================
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# VS Code
+.vscode/
+
+# Eclipse
+.project
+.classpath
+.settings/
+.factorypath
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# =========================
+# Build directories
+# =========================
+
+target/
+build/
+out/
+
+# Maven wrapper logs
+.maven/
+
+# Gradle
+.gradle/
+
+# =========================
+# Java compiled files
+# =========================
+
+*.class
+*.jar
+*.war
+*.ear
+
+# Keep wrapper jars
+!/.mvn/wrapper/maven-wrapper.jar
+
+# =========================
+# Logs
+# =========================
+
+logs/
+*.log
+log/
+*.out
+
+# Spring Boot logs
+spring.log
+
+# =========================
+# OS generated files
+# =========================
+
+.DS_Store
+Thumbs.db
+
+# =========================
+# Environment files
+# =========================
+
+.env
+.env.*
+!.env.example
+
+# =========================
+# Application secrets
+# =========================
+
+application-local.yml
+application-local.yaml
+application-prod.yml
+application-prod.yaml
+application-secret.yml
+application-secret.yaml
+
+# =========================
+# Docker
+# =========================
+
+docker-data/
+postgres-data/
+mysql-data/
+mongo-data/
+
+# Docker override files
+docker-compose.override.yml
+
+# =========================
+# Test & coverage
+# =========================
+
+coverage/
+jacoco.exec
+/site/jacoco/
+
+# =========================
+# Temporary files
+# =========================
+
+*.tmp
+*.temp
+*.swp
+
+# =========================
+# Mac/Linux
+# =========================
+
+*.pid
+
+# =========================
+# Node modules (if frontend exists)
+# =========================
+
+node_modules/
+
+# =========================
+# Generated files
+# =========================
+
+generated/
+bin/
+
+# =========================
+# Kubernetes / Helm secrets
+# =========================
+
+*.pem
+*.key
+*.crt
+secrets.yaml
+
+# =========================
+# Zipkin / tracing temp
+# =========================
+
+zipkin-data/
+
+# =========================
+# Kafka / Redis local volumes
+# =========================
+
+kafka-data/
+zookeeper-data/
+redis-data/
+
+# =========================
+# Swagger generated files
+# =========================
+
+.swagger-codegen/
+.openapi-generator/
+
+# =========================
+# Terraform
+# =========================
+
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+
+# =========================
+# Local configuration
+# =========================
+
+*.local
+local.properties
