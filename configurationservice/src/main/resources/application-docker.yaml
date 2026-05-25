@@ -1,0 +1,30 @@
+spring:
+  profiles:
+    active: native
+
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config
+
+      fail-fast: true
+      retry:
+        initial-interval: 5000
+        max-attempts: 10
+        max-interval: 10000
+
+
+server:
+  port: 8888
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+  endpoints:
+    web:
+      exposure:
+        include: health,info
