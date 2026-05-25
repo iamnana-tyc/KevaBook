@@ -1,0 +1,140 @@
+services:
+
+  # =========================================================
+  # MONGODB
+  # =========================================================
+  mongo:
+    image: mongodb/mongodb-community-server:latest
+    container_name: mongo
+
+    restart: unless-stopped
+
+    ports:
+      - "27017:27017"
+
+    volumes:
+      - mongo:/data/db
+
+    networks:
+      - backend
+
+    healthcheck:
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+
+  # =========================================================
+  # CONFIG SERVER
+  # =========================================================
+  configserver:
+    build:
+      context: ../configurationservice
+
+    container_name: configuration-service
+
+    restart: unless-stopped
+
+    ports:
+      - "8888:8888"
+
+    environment:
+      SPRING_PROFILES_ACTIVE: native
+      SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS: file:/config
+
+    volumes:
+      - ../configurationservice/src/main/resources/config:/config
+
+    networks:
+      - backend
+
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+
+  # =========================================================
+  # EUREKA SERVER
+  # =========================================================
+  eureka:
+    build:
+      context: ../eurekaservice
+
+    container_name: eureka-service
+
+    restart: unless-stopped
+
+    ports:
+      - "8761:8761"
+
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+    networks:
+      - backend
+
+    depends_on:
+      configserver:
+        condition: service_healthy
+
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+
+
+  # =========================================================
+  # USER SERVICE
+  # =========================================================
+  userservice:
+    build:
+      context: ../userservice
+
+    container_name: user-service
+
+    restart: on-failure
+
+    ports:
+      - "8081:8081"
+
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      MONGO_URI: ${MONGO_URI}
+
+    networks:
+      - backend
+
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+      configserver:
+        condition: service_healthy
+
+      eureka:
+        condition: service_healthy
+
+
+  # =========================================================
+  # NETWORKS
+  # =========================================================
+networks:
+    backend:
+      driver: bridge
+
+
+
+  # =========================================================
+  # VOLUMES
+  # =========================================================
+volumes:
+    mongo:
+
+
