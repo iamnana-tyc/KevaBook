@@ -1,6 +1,6 @@
 package com.example.businessservice.exception;
 
-import com.example.userservice.dto.APIResponse;
+import com.example.businessservice.dto.APIResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
