@@ -29,6 +29,8 @@ public class BusinessMapper {
             business.setAddress(address);
         }
 
+        business.setUserId(request.getUserId());
+
         return business;
     }
 
@@ -53,6 +55,8 @@ public class BusinessMapper {
 
             response.setAddress(addressResponse);
         }
+
+        response.setUserId(business.getUserId());
 
         return response;
     }
