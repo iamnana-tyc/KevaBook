@@ -8,6 +8,7 @@ services=(
   configurationservice
   eurekaservice
   userservice
+  businessservice
 )
 
 for service in "${services[@]}"
