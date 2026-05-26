@@ -4,7 +4,6 @@ import com.example.businessservice.client.UserServiceClient;
 import com.example.businessservice.dto.BusinessPageResponse;
 import com.example.businessservice.dto.BusinessRequest;
 import com.example.businessservice.dto.BusinessResponse;
-import com.example.businessservice.dto.UserResponse;
 import com.example.businessservice.exception.APIException;
 import com.example.businessservice.exception.ResourceNotFoundException;
 import com.example.businessservice.mapper.BusinessMapper;
