@@ -1,8 +1,10 @@
 package com.example.businessservice.service;
 
+import com.example.businessservice.client.UserServiceClient;
 import com.example.businessservice.dto.BusinessPageResponse;
 import com.example.businessservice.dto.BusinessRequest;
 import com.example.businessservice.dto.BusinessResponse;
+import com.example.businessservice.dto.UserResponse;
 import com.example.businessservice.exception.APIException;
 import com.example.businessservice.exception.ResourceNotFoundException;
 import com.example.businessservice.mapper.BusinessMapper;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
@@ -25,12 +28,19 @@ import java.util.List;
 public class BusinessServiceImpl implements BusinessService {
     private final BusinessRepository businessRepository;
     private final BusinessMapper businessMapper;
+    private final UserServiceClient userServiceClient;
 
     @Transactional
     @Override
     public BusinessResponse createBusiness(BusinessRequest request) {
         if (request == null)
             return null;
+
+        try{
+            userServiceClient.getUserDetails(request.getUserId());
+        } catch (HttpClientErrorException ex){
+            throw new ResourceNotFoundException("User", "userId", request.getUserId());
+        }
 
         Business business = businessMapper.mapToBusiness(request);
         try{
