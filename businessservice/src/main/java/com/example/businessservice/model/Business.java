@@ -1,6 +1,7 @@
 package com.example.businessservice.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -30,6 +31,8 @@ public class Business {
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     private Address address;
+
+    private String userId;
 
     @CreatedDate
     private LocalDateTime createdAt;

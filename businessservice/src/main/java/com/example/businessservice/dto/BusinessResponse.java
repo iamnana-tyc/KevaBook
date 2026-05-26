@@ -10,4 +10,6 @@ public class BusinessResponse {
     private String businessImageUrl;
     private String businessWebsite;
     private AddressResponse address;
+    private String userId;
+
 }
