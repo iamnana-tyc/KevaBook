@@ -7,7 +7,6 @@ cd ..
 services=(
   configurationservice
   eurekaservice
-  userservice
   businessservice
 )
 

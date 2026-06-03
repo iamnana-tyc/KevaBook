@@ -1,31 +1,6 @@
 services:
 
   # =========================================================
-  # MONGODB
-  # =========================================================
-  mongo:
-    image: mongodb/mongodb-community-server:latest
-    container_name: mongo
-
-    restart: unless-stopped
-
-    ports:
-      - "27017:27017"
-
-    volumes:
-      - mongo:/data/db
-
-    networks:
-      - backend
-
-    healthcheck:
-      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 15s
-
-  # =========================================================
   # POSTGRES
   # =========================================================
   postgres:
@@ -145,38 +120,6 @@ services:
       retries: 10
       start_period: 40s
 
-
-  # =========================================================
-  # USER SERVICE
-  # =========================================================
-  userservice:
-    build:
-      context: ../userservice
-
-    container_name: user-service
-
-    restart: on-failure
-
-    ports:
-      - "8081:8081"
-
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-      MONGO_URI: ${MONGO_URI}
-
-    networks:
-      - backend
-
-    depends_on:
-      mongo:
-        condition: service_healthy
-
-      configserver:
-        condition: service_healthy
-
-      eureka:
-        condition: service_healthy
-
   # =========================================================
   # BUSINESS SERVICE
   # =========================================================
@@ -223,7 +166,6 @@ networks:
   # VOLUMES
   # =========================================================
 volumes:
-    mongo:
     postgres:
     pgadmin:
 
