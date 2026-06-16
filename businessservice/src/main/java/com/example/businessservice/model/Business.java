@@ -19,19 +19,24 @@ public class Business {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long businessId;
 
+    private String userId;
+
     @Column(unique = true, nullable = false)
-    private String businessName;
+    private String name;
 
     private String description;
-    private String businessImageUrl;
+    private String businessLogoUrl;
     private String businessWebsite;
+    private String businessEmail;
+    private String phoneNumber;
 
     @OneToOne(mappedBy = "business", cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     private Address address;
 
-    private String userId;
+    @Enumerated(EnumType.STRING)
+    private BusinessStatus status;
 
     @CreatedDate
     private LocalDateTime createdAt;
