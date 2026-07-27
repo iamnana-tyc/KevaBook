@@ -1,9 +1,0 @@
-spring:
-  application:
-    name: userservice
-  data:
-    mongodb:
-      uri: ${MONGO_URI}
-
-server:
-  port: 8082
