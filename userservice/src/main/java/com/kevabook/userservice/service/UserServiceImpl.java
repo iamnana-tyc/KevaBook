@@ -3,12 +3,16 @@ package com.kevabook.userservice.service;
 import com.kevabook.userservice.domain.User;
 import com.kevabook.userservice.dto.CreateUserRequest;
 import com.kevabook.userservice.dto.PartialUpdateUserRequest;
+import com.kevabook.userservice.dto.UserPageResponse;
 import com.kevabook.userservice.dto.UserResponse;
 import com.kevabook.userservice.exception.ResourceNotFoundException;
 import com.kevabook.userservice.mapper.UserMapper;
 import com.kevabook.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,11 +38,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponse> getAllUsers() {
-        return userRepository.findAll()
-                .stream()
+    public UserPageResponse getAllUsers(Integer pageNumber,  Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<User> usersPage = userRepository.findAll(pageable);
+        List<User> users = usersPage.getContent();
+
+        List<UserResponse> userResponses = users.stream()
                 .map(userMapper::mapToUserResponse)
                 .toList();
+
+        UserPageResponse userPageResponse = new UserPageResponse();
+        userPageResponse.setUsers(userResponses);
+        userPageResponse.setPageNumber(usersPage.getNumber());
+        userPageResponse.setPageSize(usersPage.getSize());
+        userPageResponse.setTotalElements(usersPage.getTotalElements());
+        userPageResponse.setTotalPages(usersPage.getTotalPages());
+        userPageResponse.setLastPage(usersPage.isLast());
+
+        return userPageResponse;
     }
 
     @Override
