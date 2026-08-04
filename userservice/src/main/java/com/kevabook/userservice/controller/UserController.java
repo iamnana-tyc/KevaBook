@@ -16,12 +16,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @Value("${app.pagination.default-page-number}")
-    private final String defaultPageNumber;
-
-    @Value("${app.pagination.default-page-size}")
-    private final String defaultPageSize;
-
     @PostMapping
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest createUserRequest) {
         UserResponse user = userService.createUser(createUserRequest);

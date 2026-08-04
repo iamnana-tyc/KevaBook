@@ -23,5 +23,5 @@ server:
 app:
   pagination:
     default-page-number: 0
-    default-page-sizze: 5
+    default-page-size: 5
 
