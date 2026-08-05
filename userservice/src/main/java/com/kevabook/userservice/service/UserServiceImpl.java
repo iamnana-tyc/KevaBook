@@ -9,10 +9,12 @@ import com.kevabook.userservice.mapper.UserMapper;
 import com.kevabook.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,11 +36,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponse> getAllUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(userMapper::mapToUserResponse)
-                .toList();
+    public Page<UserResponse> getAllUsers(Integer pageNumber,  Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<User> usersPage = userRepository.findAll(pageable);
+
+        return usersPage.map(userMapper::mapToUserResponse);
     }
 
     @Override
