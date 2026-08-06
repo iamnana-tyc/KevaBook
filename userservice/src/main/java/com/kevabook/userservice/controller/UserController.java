@@ -1,16 +1,13 @@
 package com.kevabook.userservice.controller;
 
-import com.kevabook.userservice.dto.CreateUserRequest;
-import com.kevabook.userservice.dto.PartialUpdateUserRequest;
-import com.kevabook.userservice.dto.UserResponse;
+import com.kevabook.userservice.dto.*;
 import com.kevabook.userservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/users")
@@ -27,8 +24,12 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponse>> getAllUsers() {
-        List<UserResponse> users = userService.getAllUsers();
+    public ResponseEntity<Page<UserResponse>> getAllUsers(
+            @RequestParam(name = "pageNumber", defaultValue = "${app.pagination.default-page-number}" , required = false) Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "${app.pagination.default-page-size}", required = false) Integer pageSize
+
+    ) {
+        Page<UserResponse> users = userService.getAllUsers(pageNumber, pageSize);
 
         return ResponseEntity.ok(users);
     }
@@ -50,9 +51,9 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable("userId") Long userId) {
+    public ResponseEntity<APIResponse> deleteUser(@PathVariable("userId") Long userId) {
         userService.deleteUser(userId);
 
-        return ResponseEntity.ok("Successfully deleted user");
+        return ResponseEntity.ok(new APIResponse("Successfully deleted user", true));
     }
 }

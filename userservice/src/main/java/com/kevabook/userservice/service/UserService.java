@@ -3,13 +3,12 @@ package com.kevabook.userservice.service;
 import com.kevabook.userservice.dto.CreateUserRequest;
 import com.kevabook.userservice.dto.PartialUpdateUserRequest;
 import com.kevabook.userservice.dto.UserResponse;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface UserService {
     UserResponse createUser(CreateUserRequest request);
 
-    List<UserResponse> getAllUsers();
+    Page<UserResponse> getAllUsers(Integer pageNumber, Integer pageSize);
 
     UserResponse getUser(Long userId);
 
